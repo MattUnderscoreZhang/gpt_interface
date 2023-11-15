@@ -1,6 +1,6 @@
 
 [project]
-name = "gpt_interface"
+name = "py_gpt_interface"
 version = "0.1.0"
 description = "A simple interface for using the GPT API."
 authors = [
