@@ -12,7 +12,7 @@ def save_log():
         model="gpt-4",
     )
     interface.say("Hi there!")
-    my_path = Path(__file__).parent
+    my_path = Path(__file__).parent  # saves in examples/ folder
     interface.log.save(my_path / "my_log.json")
 
 
