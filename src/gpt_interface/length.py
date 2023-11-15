@@ -1,14 +1,17 @@
 import tiktoken
 
+from gpt_interface.log import Log
 
-def length(self) -> int:
-    enc = tiktoken.encoding_for_model(self.model)
+
+def length(model: str, log: Log) -> int:
+    enc = tiktoken.encoding_for_model(model)
     return sum([
         len(enc.encode(message.content)) + 4  # every message follows <im_start>{role/name}\n{content}<im_end>\n
-        for message in self.log
+        for message in log
     ]) + 2  # every reply is primed with <im_start>assistant
 
 
+# TODO: prune messages when they get too long
 def prune(self):
     """Prune the log to a reasonable number of tokens."""
     messages = [

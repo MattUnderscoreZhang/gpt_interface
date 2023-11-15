@@ -1,7 +1,8 @@
-import openai
 from openai import OpenAI
 
+from gpt_interface.completions import call_completion
 from gpt_interface.log import Log
+from gpt_interface.rate_limiter import RateLimiter
 
 
 class GptInterface:
@@ -13,11 +14,13 @@ class GptInterface:
         temperature: float = 1.0,
         warnings: bool = True,
     ) -> None:
-        openai.api_key = openai_api_key
         self.set_model(model, warnings=warnings)
         self.set_json_mode(json_mode)
         self.temperature = temperature
-        self.interface = OpenAI()
+        self.interface = OpenAI(api_key=openai_api_key)
+        self.log = Log()
+        self.rate_limiter = RateLimiter()
+        self.system_message: str | None = None
 
     def set_model(self, model: str, warnings: bool = True) -> None:
         self.model = model
@@ -32,43 +35,25 @@ class GptInterface:
             print(f"See https://platform.openai.com/docs/models for more information.")
             print(f"To deactivate this warning, set warnings=False during GptInterface initialization.")
 
+    def set_rate_limiter(self, min_wait_time_in_sec: int) -> None:
+        self.rate_limiter = RateLimiter(min_wait_time_in_sec)
+
     def set_json_mode(self, json_mode: bool) -> None:
+        # TODO: json_mode is not used yet
         self.json_mode = json_mode
 
-    def call(self, log: Log) -> str:
-        if self.model.startswith("gpt-4") or self.model.startswith("gpt-3.5"):
-            # modern models
-            response = self.interface.chat_completions.create(
-                model=self.model,
-                messages=[
-                    {
-                        "role": message.role,
-                        "content": message.content
-                    }
-                    for message in log
-                ],
-                temperature=self.temperature,
-                frequency_penalty=0,
-                presence_penalty=0
-            )
-            return response.choices[0].message.content
-        elif any([
-            self.model.startswith(prefix)
-            for prefix in ["davinci", "curie", "babbage", "ada", "text-"]
-        ]):
-            # legacy models
-            response = self.interface.completions.create(
-                model=self.model,
-                prompt="\n".join([
-                    f"{message.role}: {message.content}"
-                    for message in log
-                ]) + "assistant: ",
-                temperature=self.temperature,
-                max_tokens=100,
-                top_p=1,
-                frequency_penalty=0,
-                presence_penalty=0,
-            )
-            return response.choices[0].text
-        else:
-            return str("Unrecognized model.")
+    def set_system_message(self, content: str | None) -> None:
+        self.system_message = content
+
+    def say(self, user_message: str) -> str:
+        self.log.append("user", user_message)
+        assistant_message = call_completion(
+            interface=self.interface,
+            model=self.model,
+            log=self.log,
+            system_message=self.system_message,
+            temperature=self.temperature,
+        )
+        self.rate_limiter.wait()
+        self.log.append("assistant", assistant_message)
+        return assistant_message
