@@ -12,6 +12,30 @@ I recommend creating a .env file and adding it to your .gitignore file. The file
 OPENAI_API_KEY=sk-exampleKey
 ```
 
+## Simple Usage
+
+```
+from dotenv import load_dotenv
+import os
+
+from gpt_interface import GptInterface
+
+
+if __name__ == "__main__":
+    load_dotenv()  # load the OpenAI API key from a .env file
+    interface = GptInterface(  # create interface
+        openai_api_key=os.getenv("OPENAI_API_KEY"),
+        model="gpt-3.5-turbo",
+    )
+    interface.say("Hi!")  # talk to GPT
+    response = interface.say("What year is it?")  # conversation log is stored in memory
+    assert "2023" in response
+    print(interface.log)  # can print logs
+    interface.log.save("my_log.json")  # can save or load logs
+    interface.log.load("my_log.json")
+```
+
+
 ## Examples
 
-See the examples/ folder to see how to use the interface.
+See the examples/ folder to see more details about how to use the interface.

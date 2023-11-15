@@ -41,7 +41,7 @@ def force_response():
 
 
 if __name__ == "__main__":
-    load_dotenv()  # Load the OpenAI API key from a .env file
+    load_dotenv()  # load the OpenAI API key from a .env file
     change_name()
     print()
     force_response()
