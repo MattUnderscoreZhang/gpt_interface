@@ -10,10 +10,15 @@ dependencies = [
     "openai>=1.2.4",
     "dotenv>=0.0.5",
     "tiktoken>=0.5.1",
+    "twine>=4.0.2",
+    "build>=1.0.3",
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.8"
 readme = "README.md"
 license = {text = "MIT"}
+
+[project.urls]
+"Homepage" = "https://github.com/MattUnderscoreZhang/gpt_interface"
 
 [build-system]
 requires = ["pdm-backend"]
