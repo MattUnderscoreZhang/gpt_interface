@@ -17,6 +17,7 @@ OPENAI_API_KEY=sk-exampleKey
 ```
 from dotenv import load_dotenv
 import os
+from pathlib import Path
 
 from gpt_interface import GptInterface
 
@@ -27,12 +28,13 @@ if __name__ == "__main__":
         openai_api_key=os.getenv("OPENAI_API_KEY"),
         model="gpt-3.5-turbo",
     )
-    interface.say("Hi!")  # talk to GPT
-    response = interface.say("What year is it?")  # conversation log is stored in memory
-    assert "2023" in response
+    interface.say("Hi! My name is Joe")  # talk to GPT
+    response = interface.say("What's my name?")  # conversation log is stored in memory
+    assert "Joe" in response
     print(interface.log)  # can print logs
-    interface.log.save("my_log.json")  # can save or load logs
-    interface.log.load("my_log.json")
+    current_path = Path(__name__).parent.absolute()
+    interface.log.save(current_path / "my_log.json")  # can save or load logs
+    interface.log.load(current_path / "my_log.json")
 ```
 
 

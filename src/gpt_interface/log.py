@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 import json
 import os
 from pathlib import Path
@@ -37,8 +37,8 @@ class Log:
         if not os.path.exists(path.parent):
             os.makedirs(path.parent)
         with open(path, "w") as f:
-            json.dump(self.messages, f, indent=4)
+            json.dump([asdict(message) for message in self.messages], f, indent=4)
 
     def load(self, path: Path) -> None:
         with open(path, "r") as f:
-            self.messages = json.load(f)
+            self.messages = [Message(**message) for message in json.load(f)]
