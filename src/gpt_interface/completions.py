@@ -1,6 +1,7 @@
 from openai import OpenAI
 
 from gpt_interface.log import Log
+from gpt_interface.models import known_models
 
 
 def call_completion(
@@ -9,14 +10,25 @@ def call_completion(
     log: Log,
     temperature: float,
     system_message: str | None,
+    json_mode: bool,
 ) -> str:
-    if model.startswith("gpt-4") or model.startswith("gpt-3.5"):
-        return call_modern_model(interface, model, log, temperature, system_message)
-    elif any([
-        model.startswith(prefix)
-        for prefix in ["davinci", "curie", "babbage", "ada", "text-"]
-    ]):
-        return call_legacy_model(interface, model, log, temperature, system_message)
+    if model in [m.name for m in known_models if not m.legacy_chat_api]:
+        return call_modern_model(
+            interface=interface,
+            model=model,
+            log=log,
+            temperature=temperature,
+            system_message=system_message,
+            json_mode=json_mode,
+        )
+    elif model in [m.name for m in known_models]:
+        return call_legacy_model(
+            interface=interface,
+            model=model,
+            log=log,
+            temperature=temperature,
+            system_message=system_message,
+        )
     else:
         raise ValueError(f"Unrecognized model: {model}")
 
@@ -27,6 +39,7 @@ def call_modern_model(
     log: Log,
     temperature: float,
     system_message: str | None,
+    json_mode: bool,
 ) -> str:
     messages=[
         {
@@ -40,13 +53,16 @@ def call_modern_model(
             "role": "system",
             "content": system_message,
         })
-    response = interface.chat.completions.create(
-        model=model,
-        messages=messages,
-        temperature=temperature,
-        frequency_penalty=0,
-        presence_penalty=0
-    )
+    completion_args = {
+        "model": model,
+        "messages": messages,
+        "temperature": temperature,
+        "frequency_penalty": 0,
+        "presence_penalty": 0,
+    }
+    if json_mode and model in ["gpt-3.5-turbo-1106", "gpt-4-1106-preview"]:
+        completion_args["response_format"] = { "type": "json_object" }
+    response = interface.chat.completions.create(**completion_args)
     return_message = response.choices[0].message.content
     return return_message if return_message else "[ERROR: NO RESPONSE]"
 
