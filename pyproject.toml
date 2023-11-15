@@ -1,0 +1,20 @@
+
+[project]
+name = "gpt_interface"
+version = "0.1.0"
+description = "A simple interface for using the GPT API."
+authors = [
+    {name = "Matt Zhang", email = "set.stun@gmail.com"},
+]
+dependencies = [
+    "openai>=1.2.4",
+    "dotenv>=0.0.5",
+    "tiktoken>=0.5.1",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
