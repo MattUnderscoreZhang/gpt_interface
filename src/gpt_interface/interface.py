@@ -38,6 +38,9 @@ class GptInterface:
 
     def say(self, user_message: str) -> str:
         self.log.append("user", user_message)
+        return self.get_assistant_message()
+
+    def get_assistant_message(self) -> str:
         assistant_message = call_completion(
             interface=self.interface,
             model=self.model,
