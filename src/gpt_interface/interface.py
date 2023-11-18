@@ -1,6 +1,6 @@
 from openai import OpenAI
 
-from gpt_interface.completions import call_completion
+from gpt_interface.completions import call_completion, SystemMessageOptions
 from gpt_interface.log import Log
 from gpt_interface.models import known_models
 from gpt_interface.rate_limiter import RateLimiter
@@ -20,7 +20,11 @@ class GptInterface:
         self.interface = OpenAI(api_key=openai_api_key)
         self.log = Log()
         self.rate_limiter = RateLimiter()
-        self.system_message: str | None = None
+        self.system_message_options = SystemMessageOptions(
+            use_system_message=False,
+            system_message="",
+            message_at_end=True,
+        )
 
     def set_model(self, model: str) -> None:
         self.model = model
@@ -33,8 +37,17 @@ class GptInterface:
     def set_json_mode(self, json_mode: bool) -> None:
         self.json_mode = json_mode
 
-    def set_system_message(self, content: str | None) -> None:
-        self.system_message = content
+    def set_system_message(
+        self,
+        use_system_message: bool,
+        system_message: str = "",
+        message_at_end: bool = True,
+    ) -> None:
+        self.system_message_options = SystemMessageOptions(
+            use_system_message=use_system_message,
+            system_message=system_message,
+            message_at_end=message_at_end,
+        )
 
     def say(self, user_message: str) -> str:
         self.log.append("user", user_message)
@@ -45,7 +58,7 @@ class GptInterface:
             interface=self.interface,
             model=self.model,
             log=self.log,
-            system_message=self.system_message,
+            system_message_options=self.system_message_options,
             temperature=self.temperature,
             json_mode=self.json_mode,
         )
