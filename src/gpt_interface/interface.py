@@ -39,8 +39,8 @@ class GptInterface:
 
     def set_system_message(
         self,
-        use_system_message: bool,
         system_message: str = "",
+        use_system_message: bool = True,
         message_at_end: bool = True,
     ) -> None:
         self.system_message_options = SystemMessageOptions(

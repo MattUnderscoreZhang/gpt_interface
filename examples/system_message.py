@@ -11,8 +11,7 @@ def be_pirate():
         model="gpt-3.5-turbo",
     )
     interface.set_system_message(
-        use_system_message=True,
-        system_message="You will respond as a 19th century pirate. You only speak in the form of lyrics from sea shanties.",
+        "You will respond as a 19th century pirate. You only speak in the form of lyrics from sea shanties.",
         message_at_end=False,  # message at start or end of log sent to GPT
     )
     interface.say("What's your job?")
@@ -26,8 +25,7 @@ def be_space_trucker():
         model="gpt-3.5-turbo",
     )
     interface.set_system_message(
-        use_system_message=True,
-        system_message="You will respond as a 23rd century space trucker. You talk like a hard-boiled detective. Keep your responses short.",
+        "You will respond as a 23rd century space trucker. You talk like a hard-boiled detective. Keep your responses short.",
     )  # message_at_end=True by default
     interface.say("What's your job?")
     interface.say("What year is it?")

@@ -12,12 +12,13 @@ def json_response():
         json_mode=True,
     )
     interface.set_system_message(
-        use_system_message=True,
-        system_message="Reply in the form {'query': [user query], 'answer': [your response]}.",
+        "Reply in the form {'query': [user query], 'answer': [your response]}.",
     )
     interface.say("Hello.")
     interface.set_json_mode(False)
-    interface.set_system_message(None)
+    interface.set_system_message(
+        use_system_message=False,
+    )
     interface.say("Say hello normally.")
     print(interface.log)
 
