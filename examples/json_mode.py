@@ -11,7 +11,10 @@ def json_response():
         model="gpt-4",
         json_mode=True,
     )
-    interface.set_system_message("Reply in the form {'query': [user query], 'answer': [your response]}.")
+    interface.set_system_message(
+        use_system_message=True,
+        system_message="Reply in the form {'query': [user query], 'answer': [your response]}.",
+    )
     interface.say("Hello.")
     interface.set_json_mode(False)
     interface.set_system_message(None)
