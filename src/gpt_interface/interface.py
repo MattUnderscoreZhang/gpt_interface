@@ -53,6 +53,10 @@ class GptInterface:
         self.log.append("user", user_message)
         return self.get_assistant_message()
 
+    def retry(self) -> str:
+        self.log.messages = self.log.messages[:-1]
+        return self.get_assistant_message()
+
     def get_assistant_message(self) -> str:
         assistant_message = call_completion(
             interface=self.interface,
