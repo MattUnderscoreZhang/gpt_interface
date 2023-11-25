@@ -28,7 +28,7 @@ def get_required_parameters(func: Callable) -> list[str]:
     ]
 
 
-def get_function_dict(
+def describe_function(
     func: Callable,
     description: str,  # function description
     param_descriptions: dict[str, str],  # must have a description for every parameter

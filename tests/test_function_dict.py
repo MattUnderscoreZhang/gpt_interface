@@ -1,7 +1,7 @@
 from random import randint
 from typing import Literal
 
-from gpt_interface.functions import get_function_dict
+from gpt_interface.functions import describe_function
 
 
 def add(a: int, b: int) -> int:
@@ -9,7 +9,7 @@ def add(a: int, b: int) -> int:
 
 
 def test_function_dict():
-    func_dict = get_function_dict(
+    func_dict = describe_function(
         add,
         description="Add two numbers",
         param_descriptions={
@@ -42,7 +42,7 @@ def repeat_string(s: str, n: int) -> str:
 
 
 def test_function_dict_with_param_types():
-    func_dict = get_function_dict(
+    func_dict = describe_function(
         repeat_string,
         description="Repeat a string n times",
         param_descriptions={
@@ -81,7 +81,7 @@ def convert_day_to_int(day: Literal["M", "T", "W", "Th", "F", "Sa", "Su"], rando
 
 
 def test_function_dict_with_allowed_values():
-    func_dict = get_function_dict(
+    func_dict = describe_function(
         convert_day_to_int,
         description="Convert a day of the week to an integer",
         param_descriptions={
