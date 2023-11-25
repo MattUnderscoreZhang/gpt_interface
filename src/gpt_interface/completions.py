@@ -19,6 +19,7 @@ def call_completion(
     temperature: float,
     system_message_options: SystemMessageOptions,
     json_mode: bool,
+    functions: list[dict],
 ) -> str:
     if model in [m.name for m in known_models if not m.legacy_chat_api]:
         return call_modern_model(
@@ -28,6 +29,7 @@ def call_completion(
             temperature=temperature,
             system_message_options=system_message_options,
             json_mode=json_mode,
+            functions=functions,
         )
     elif model in [m.name for m in known_models]:
         return call_legacy_model(
@@ -48,7 +50,8 @@ def call_modern_model(
     temperature: float,
     system_message_options: SystemMessageOptions,
     json_mode: bool,
-) -> str:
+    functions: list[dict],
+) -> str | dict:
     messages=[
         {
             "role": message.role,
@@ -72,10 +75,15 @@ def call_modern_model(
         "frequency_penalty": 0,
         "presence_penalty": 0,
     }
+    if len(functions) > 0:
+        completion_args["functions"] = functions
     if json_mode and model in ["gpt-3.5-turbo-1106", "gpt-4-1106-preview"]:
         completion_args["response_format"] = { "type": "json_object" }
     response = interface.chat.completions.create(**completion_args)
-    return_message = response.choices[0].message.content
+    if response.choices[0].finish_reason == "function_call":
+        return_message = response.choices[0].message.function_call
+    else:
+        return_message = response.choices[0].message.content
     return return_message if return_message else "[ERROR: NO RESPONSE]"
 
 

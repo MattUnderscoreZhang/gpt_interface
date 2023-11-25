@@ -1,3 +1,4 @@
+from random import randint
 from typing import Literal
 
 from gpt_interface.functions import get_function_dict
@@ -73,7 +74,9 @@ def test_function_dict_with_param_types():
     }
 
 
-def convert_day_to_int(day: Literal["M", "T", "W", "Th", "F", "Sa", "Su"]) -> int:
+def convert_day_to_int(day: Literal["M", "T", "W", "Th", "F", "Sa", "Su"], random: bool = False) -> int:
+    if random:
+        return randint(0, 6)
     return ["M", "T", "W", "Th", "F", "Sa", "Su"].index(day)
 
 
@@ -83,6 +86,7 @@ def test_function_dict_with_allowed_values():
         description="Convert a day of the week to an integer",
         param_descriptions={
             "day": "The day of the week",
+            "random": "Whether to return a random integer",
         },
         param_types={
             "day": "string",
@@ -101,6 +105,10 @@ def test_function_dict_with_allowed_values():
                     "type": "string",
                     "description": "The day of the week",
                     "enum": ["M", "T", "W", "Th", "F", "Sa", "Su"],
+                },
+                "random": {
+                    "type": "boolean",
+                    "description": "Whether to return a random integer",
                 },
             },
             "required": ["day"],

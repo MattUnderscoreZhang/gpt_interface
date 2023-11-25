@@ -3,11 +3,12 @@ import os
 from typing import cast
 
 from gpt_interface import GptInterface
-from gpt_interface.functions import Function, FunctionParameter, get_function_dict
+from gpt_interface.functions import get_function_dict
 
 
-def add(a: int, b: int) -> int:
-    return a + b
+def get_encrypted_message(message: str) -> str:
+    encrypted_message = message[::-1]
+    return encrypted_message
 
 
 if __name__ == "__main__":
@@ -20,23 +21,15 @@ if __name__ == "__main__":
         use_system_message=False,
     )
     interface.set_functions(
-      "name": "get_current_weather",
-      "description": "Get the current weather in a given location",
-      "parameters": {
-        "type": "object",
-        "properties": {
-          "location": {
-            "type": "string",
-            "description": "The city and state, e.g. San Francisco, CA"
-          },
-          "unit": {
-            "type": "string",
-            "enum": ["celsius", "fahrenheit"]
-          }
-        },
-        "required": ["location"]
-      }
+        [
+            get_function_dict(
+                get_encrypted_message,
+                description="Encrypt a message",
+                param_descriptions={
+                    "message": "The message to encrypt",
+                },
+            ),
+        ]
     )
-    interface.say("What's your job?")
-    interface.say("What year is it?")
-    print(interface.log)
+    response = interface.say("Encypt the message 'Hello, world!'")
+    breakpoint()

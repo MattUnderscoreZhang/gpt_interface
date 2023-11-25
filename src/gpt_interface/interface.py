@@ -25,6 +25,7 @@ class GptInterface:
             system_message="",
             message_at_end=True,
         )
+        self.functions = []
 
     def set_model(self, model: str) -> None:
         self.model = model
@@ -49,6 +50,9 @@ class GptInterface:
             message_at_end=message_at_end,
         )
 
+    def set_functions(self, functions: list[dict]) -> None:
+        self.functions = functions
+
     def say(self, user_message: str) -> str:
         self.log.append("user", user_message)
         return self.get_assistant_message()
@@ -65,6 +69,7 @@ class GptInterface:
             system_message_options=self.system_message_options,
             temperature=self.temperature,
             json_mode=self.json_mode,
+            functions=self.functions,
         )
         self.rate_limiter.wait()
         self.log.append("assistant", assistant_message)

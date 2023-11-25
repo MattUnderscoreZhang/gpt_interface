@@ -7,6 +7,7 @@ def get_param_types(func: Callable) -> dict[str, str]:
         int: "int",
         str: "string",
         float: "float",
+        bool: "boolean",
         # add more mappings as needed
     }
     return {
@@ -29,13 +30,17 @@ def get_required_parameters(func: Callable) -> list[str]:
 
 def get_function_dict(
     func: Callable,
-    description: str,
-    param_descriptions: dict[str, str],
-    param_types: dict[str, str] | None = None,
-    param_allowed_values: dict[str, list[str]] | None = None,
+    description: str,  # function description
+    param_descriptions: dict[str, str],  # must have a description for every parameter
+    param_types: dict[str, str] | None = None,  # manually override these param types (will be auto-extracted otherwise)
+    param_allowed_values: dict[str, list[str]] | None = None,  # for any params that only have a few allowed values
 ) -> dict:
-    if param_types is None:
-        param_types = get_param_types(func)
+    extracted_param_types = get_param_types(func)
+    if param_types is not None:
+        extracted_param_types = {
+            **extracted_param_types,
+            **param_types,
+        }
     func_dict = {
         "name": func.__name__,
         "description": description,
@@ -43,7 +48,7 @@ def get_function_dict(
             "type": "object",
             "properties": {
                 parameter: {
-                    "type": param_types[parameter],
+                    "type": extracted_param_types[parameter],
                     "description": param_descriptions.get(parameter, ""),
                 }
                 for parameter in func.__code__.co_varnames[
