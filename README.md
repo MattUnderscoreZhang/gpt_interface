@@ -14,7 +14,7 @@ OPENAI_API_KEY=sk-exampleKey
 
 ## Simple Usage
 
-```
+```python
 from dotenv import load_dotenv
 import os
 from pathlib import Path
@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
 The log from the example above would look something like this:
 
-```
+```json
 [
     {
         "role": "user",
