@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import json
 from openai import OpenAI
 
 from gpt_interface.log import Log
@@ -20,7 +21,7 @@ def call_completion(
     system_message_options: SystemMessageOptions,
     json_mode: bool,
     functions: list[dict],
-) -> str:
+) -> str | dict:
     if model in [m.name for m in known_models if not m.legacy_chat_api]:
         return call_modern_model(
             interface=interface,
@@ -81,7 +82,11 @@ def call_modern_model(
         completion_args["response_format"] = { "type": "json_object" }
     response = interface.chat.completions.create(**completion_args)
     if response.choices[0].finish_reason == "function_call":
-        return_message = response.choices[0].message.function_call
+        function_call = response.choices[0].message.function_call
+        return_message = {
+            "function_name": function_call.name,
+            "arguments": json.loads(function_call.arguments),
+        }
     else:
         return_message = response.choices[0].message.content
     return return_message if return_message else "[ERROR: NO RESPONSE]"
