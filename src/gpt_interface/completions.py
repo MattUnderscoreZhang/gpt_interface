@@ -21,7 +21,7 @@ def call_completion(
     system_message_options: SystemMessageOptions,
     json_mode: bool,
     functions: list[dict],
-) -> str | dict:
+) -> str:
     if model in [m.name for m in known_models if not m.legacy_chat_api]:
         return call_modern_model(
             interface=interface,
@@ -52,7 +52,7 @@ def call_modern_model(
     system_message_options: SystemMessageOptions,
     json_mode: bool,
     functions: list[dict],
-) -> str | dict:
+) -> str:
     messages=[
         {
             "role": message.role,
@@ -83,10 +83,10 @@ def call_modern_model(
     response = interface.chat.completions.create(**completion_args)
     if response.choices[0].finish_reason == "function_call":
         function_call = response.choices[0].message.function_call
-        return_message = {
+        return_message = json.dumps({
             "function_name": function_call.name,
             "arguments": json.loads(function_call.arguments),
-        }
+        })
     else:
         return_message = response.choices[0].message.content
     return return_message if return_message else "[ERROR: NO RESPONSE]"

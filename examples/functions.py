@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+import json
 import os
 from random import randint
 from typing import cast, Literal
@@ -29,8 +30,9 @@ def call_simple_function() -> None:
     )
     response = interface.say("Encypt the message 'Hello, world!'")
     print(response)
-    assert response["function_name"] == "get_encrypted_message"
-    assert get_encrypted_message(**response["arguments"]) == "!dlrow ,olleH"
+    response_dict = json.loads(response)
+    assert response_dict["function_name"] == "get_encrypted_message"
+    assert get_encrypted_message(**response_dict["arguments"]) == "!dlrow ,olleH"
 
 
 def call_complex_function() -> None:
@@ -63,8 +65,9 @@ def call_complex_function() -> None:
     )
     response = interface.say("Convert Monday to an integer")
     print(response)
-    assert response["function_name"] == "convert_day_to_int"
-    assert convert_day_to_int(**response["arguments"]) == 0
+    response_dict = json.loads(response)
+    assert response_dict["function_name"] == "convert_day_to_int"
+    assert convert_day_to_int(**response_dict["arguments"]) == 0
 
 
 if __name__ == "__main__":
