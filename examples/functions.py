@@ -71,5 +71,5 @@ def call_external_function() -> None:
 
 if __name__ == "__main__":
     load_dotenv()  # load the OpenAI API key from a .env file
-    # get_function_call_with_optional_params()
+    get_function_call_with_optional_params()
     call_external_function()
