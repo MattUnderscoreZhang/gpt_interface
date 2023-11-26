@@ -7,33 +7,6 @@ from gpt_interface import GptInterface
 from gpt_interface.tools import make_annotated_function
 
 
-def get_simple_function_call() -> None:
-    def get_encrypted_message(message: str) -> str:
-        encrypted_message = message[::-1]
-        return encrypted_message
-
-    interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
-        model="gpt-3.5-turbo",
-    )
-    interface.set_tools(
-        [
-            make_annotated_function(
-                get_encrypted_message,
-                description="Encrypt a message",
-                param_descriptions={
-                    "message": "The message to encrypt",
-                },
-                param_types={
-                    "message": "string",
-                },
-            ),
-        ]
-    )
-    response = interface.say("Encypt the message 'Hello, world!'")
-    print(response)
-
-
 def get_function_call_with_optional_params() -> None:
     def convert_day_to_int(day: Literal["M", "T", "W", "Th", "F", "Sa", "Su"], one_index: bool = False) -> int:
         return ["M", "T", "W", "Th", "F", "Sa", "Su"].index(day) + one_index
@@ -102,6 +75,5 @@ def call_external_function() -> None:
 
 if __name__ == "__main__":
     load_dotenv()  # load the OpenAI API key from a .env file
-    get_simple_function_call()
     get_function_call_with_optional_params()
     call_external_function()
