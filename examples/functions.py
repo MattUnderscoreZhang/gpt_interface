@@ -41,10 +41,6 @@ def get_function_call_with_optional_params() -> None:
 
 
 def call_external_function() -> None:
-    def print_and_confirm(strings: list[str], column_widths: list[int], colors: list[str], divider: str = " | ") -> str:
-        print_columns(strings, column_widths, colors, divider)
-        return "Printing complete"
-
     interface = GptInterface(
         openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4",
@@ -52,8 +48,8 @@ def call_external_function() -> None:
     interface.set_tools(
         [
             make_annotated_function(
-                print_and_confirm,
-                description="Divide the terminal output into columns and print one wrapped string in each column. The strings, column_widths, and colors parameters should all be lists of the same length.",
+                print_columns,
+                description="Divide the terminal output into columns and print one wrapped string in each column. The strings, column_widths, and colors parameters should all be lists of the same length. This function does not return anything, but you can assume it completes correctly once called, and can let the user know so.",
                 param_descriptions={
                     "strings": "The strings to print, one for each column",
                     "column_widths": "The width of each column",
@@ -75,5 +71,5 @@ def call_external_function() -> None:
 
 if __name__ == "__main__":
     load_dotenv()  # load the OpenAI API key from a .env file
-    get_function_call_with_optional_params()
+    # get_function_call_with_optional_params()
     call_external_function()
