@@ -5,6 +5,7 @@ from typing import Callable, Literal
 
 @dataclass
 class AnnotatedFunction:
+    name: str
     function: Callable
     annotation: dict
 
@@ -32,38 +33,42 @@ def make_annotated_function(
     param_allowed_values: dict[str, list[str]] | None = None,  # for any params that only have a few allowed values
 ) -> AnnotatedFunction:
     function_annotation = {
-        "name": func.__name__,
-        "description": description,
-        "parameters": {
-            "type": "object",
-            "properties": {
-                parameter: {
-                    **(
-                        {
-                            "type": "array",
-                            "items": {
-                                "type": param_types[parameter][6:][:-1],
-                            },
-                        }
-                        if param_types[parameter].startswith("array")
-                        else
-                        {
-                            "type": param_types[parameter],
-                        }
-                    ),
-                    "description": param_descriptions.get(parameter, ""),
-                }
-                for parameter in func.__code__.co_varnames[
-                    : func.__code__.co_argcount
-                ]
+        "type": "function",
+        "function": {
+            "name": func.__name__,
+            "description": description,
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    parameter: {
+                        **(
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": param_types[parameter][6:][:-1],
+                                },
+                            }
+                            if param_types[parameter].startswith("array")
+                            else
+                            {
+                                "type": param_types[parameter],
+                            }
+                        ),
+                        "description": param_descriptions.get(parameter, ""),
+                    }
+                    for parameter in func.__code__.co_varnames[
+                        : func.__code__.co_argcount
+                    ]
+                },
+                "required": _get_function_required_params(func),
             },
-            "required": _get_function_required_params(func),
         },
     }
     if param_allowed_values is not None:
         for parameter, allowed_values in param_allowed_values.items():
-            function_annotation["parameters"]["properties"][parameter]["enum"] = allowed_values
+            function_annotation["function"]["parameters"]["properties"][parameter]["enum"] = allowed_values
     return AnnotatedFunction(
+        name=func.__name__,
         function=func,
         annotation=function_annotation,
     )

@@ -1,13 +1,15 @@
 from openai import OpenAI
+from typing import Callable
 
 from gpt_interface.calls.legacy_model import call_legacy_model
 from gpt_interface.calls.modern_model import call_modern_model
 from gpt_interface.log import Log
-from gpt_interface.options.functions import AnnotatedFunction
 from gpt_interface.options.models import known_models
 from gpt_interface.options.system_message import SystemMessageOptions
+from gpt_interface.tools import Tool
 
 
+# TODO: use retry in tenacity package (https://cookbook.openai.com/examples/how_to_call_functions_with_chat_models)
 def call_gpt(
     interface: OpenAI,
     model: str,
@@ -15,7 +17,8 @@ def call_gpt(
     temperature: float,
     system_message_options: SystemMessageOptions,
     json_mode: bool,
-    annotated_functions: list[AnnotatedFunction],
+    tools: list[Tool],
+    call_again_fn: Callable
 ) -> str:
     if model in [m.name for m in known_models if not m.legacy_chat_api]:
         return call_modern_model(
@@ -25,7 +28,8 @@ def call_gpt(
             temperature=temperature,
             system_message_options=system_message_options,
             json_mode=json_mode,
-            annotated_functions=annotated_functions,
+            tools=tools,
+            call_again_fn=call_again_fn,
         )
     elif model in [m.name for m in known_models]:
         return call_legacy_model(

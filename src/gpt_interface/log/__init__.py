@@ -1,17 +1,20 @@
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
 import json
 import os
 from pathlib import Path
 from typing import Literal
 
 
-Role = Literal["user", "assistant", "system"]
+Role = Literal["user", "assistant", "system", "tool"]
 
 
 @dataclass
 class Message:
     role: Role
     content: str
+    tool_calls: list[dict] = field(default_factory=list)
+    tool_call_id: str = ""  # for use by tool only
+    name: str = ""  # for use by tool only
 
     def __str__(self) -> str:
         return f"{self.role}: {self.content}"

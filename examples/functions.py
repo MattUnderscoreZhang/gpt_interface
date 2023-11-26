@@ -4,7 +4,7 @@ from print_columns import print_columns
 from typing import cast, Literal
 
 from gpt_interface import GptInterface
-from gpt_interface.options.functions import make_annotated_function
+from gpt_interface.tools import make_annotated_function
 
 
 def get_simple_function_call() -> None:
@@ -16,7 +16,7 @@ def get_simple_function_call() -> None:
         openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
     )
-    interface.set_annotated_functions(
+    interface.set_tools(
         [
             make_annotated_function(
                 get_encrypted_message,
@@ -42,7 +42,7 @@ def get_function_call_with_optional_params() -> None:
         openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
     )
-    interface.set_annotated_functions(
+    interface.set_tools(
         [
             make_annotated_function(
                 convert_day_to_int,
@@ -68,14 +68,18 @@ def get_function_call_with_optional_params() -> None:
 
 
 def call_external_function() -> None:
+    def print_and_confirm(strings: list[str], column_widths: list[int], colors: list[str], divider: str = " | ") -> str:
+        print_columns(strings, column_widths, colors, divider)
+        return "Printing complete"
+
     interface = GptInterface(
         openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4",
     )
-    interface.set_annotated_functions(
+    interface.set_tools(
         [
             make_annotated_function(
-                print_columns,
+                print_and_confirm,
                 description="Divide the terminal output into columns and print one wrapped string in each column. The strings, column_widths, and colors parameters should all be lists of the same length.",
                 param_descriptions={
                     "strings": "The strings to print, one for each column",
@@ -98,6 +102,6 @@ def call_external_function() -> None:
 
 if __name__ == "__main__":
     load_dotenv()  # load the OpenAI API key from a .env file
-    # get_simple_function_call()
-    # get_function_call_with_optional_params()
+    get_simple_function_call()
+    get_function_call_with_optional_params()
     call_external_function()

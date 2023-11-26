@@ -3,9 +3,9 @@ from openai import OpenAI
 from gpt_interface.calls.call_gpt import call_gpt
 from gpt_interface.calls.rate_limiter import RateLimiter
 from gpt_interface.log import Log
-from gpt_interface.options.functions import AnnotatedFunction
 from gpt_interface.options.models import known_models
 from gpt_interface.options.system_message import SystemMessageOptions
+from gpt_interface.tools import Tool
 
 
 class GptInterface:
@@ -27,7 +27,7 @@ class GptInterface:
             system_message="",
             message_at_end=True,
         )
-        self.annotated_functions: list[AnnotatedFunction] = []
+        self.tools: list[Tool] = []
 
     def set_model(self, model: str) -> None:
         self.model = model
@@ -49,8 +49,8 @@ class GptInterface:
             message_at_end=message_at_end,
         )
 
-    def set_annotated_functions(self, annotated_functions: list[AnnotatedFunction]) -> None:
-        self.annotated_functions = annotated_functions
+    def set_tools(self, tools: list[Tool]) -> None:
+        self.tools = tools
 
     def say(self, user_message: str) -> str:
         self.log.append("user", user_message)
@@ -68,7 +68,8 @@ class GptInterface:
             system_message_options=self.system_message_options,
             temperature=self.temperature,
             json_mode=self.json_mode,
-            annotated_functions=self.annotated_functions,
+            tools=self.tools,
+            call_again_fn=self.get_assistant_message,
         )
         self.rate_limiter.wait()
         self.log.append("assistant", assistant_message)
