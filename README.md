@@ -63,3 +63,5 @@ The log from the example above would look something like this:
 ## Advanced Examples
 
 See the examples/ folder to see more details about how to use the interface.
+
+You can do things like set JSON response mode, call functions, set system messages, regenerate the last response, etc.
