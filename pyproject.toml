@@ -1,7 +1,7 @@
 
 [project]
 name = "py_gpt_interface"
-version = "0.5.0"
+version = "0.6.0"
 description = "A simple interface for using the GPT API."
 authors = [
     {name = "Matt Zhang", email = "set.stun@gmail.com"},
