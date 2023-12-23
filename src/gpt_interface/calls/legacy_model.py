@@ -10,6 +10,7 @@ def call_legacy_model(
     log: Log,
     temperature: float,
     system_message_options: SystemMessageOptions,
+    thinking_time: int,
 ) -> str:
     prompt = "\n".join([
         f"{message.role}: {message.content}"
@@ -20,6 +21,7 @@ def call_legacy_model(
             prompt += "\nsystem: " + system_message_options.system_message
         else:
             prompt = "system: " + system_message_options.system_message + "\n" + prompt
+    prompt += "." * thinking_time
     prompt += "\nassistant: "
     response = interface.completions.create(
         model=model,

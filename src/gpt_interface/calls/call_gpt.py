@@ -18,7 +18,8 @@ def call_gpt(
     system_message_options: SystemMessageOptions,
     json_mode: bool,
     tools: list[Tool],
-    call_again_fn: Callable
+    call_again_fn: Callable,
+    thinking_time: int,
 ) -> str:
     if model in [m.name for m in known_models if not m.legacy_chat_api]:
         return call_modern_model(
@@ -30,6 +31,7 @@ def call_gpt(
             json_mode=json_mode,
             tools=tools,
             call_again_fn=call_again_fn,
+            thinking_time=thinking_time,
         )
     elif model in [m.name for m in known_models]:
         return call_legacy_model(
@@ -38,6 +40,7 @@ def call_gpt(
             log=log,
             temperature=temperature,
             system_message_options=system_message_options,
+            thinking_time=thinking_time,
         )
     else:
         raise ValueError(f"Unrecognized model: {model}")

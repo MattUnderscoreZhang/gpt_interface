@@ -15,7 +15,8 @@ def call_modern_model(
     system_message_options: SystemMessageOptions,
     json_mode: bool,
     tools: list[Tool],
-    call_again_fn: Callable
+    call_again_fn: Callable,
+    thinking_time: int,
 ) -> str:
     #================================
     # assemble log and system message
@@ -44,6 +45,7 @@ def call_modern_model(
         )
         for message in log.messages
     ]
+    messages[-1]["content"] += "." * thinking_time
     if system_message_options.use_system_message:
         system_message = {
             "role": "system",

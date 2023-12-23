@@ -52,15 +52,15 @@ class GptInterface:
     def set_tools(self, tools: list[Tool]) -> None:
         self.tools = tools
 
-    def say(self, user_message: str) -> str:
+    def say(self, user_message: str, thinking_time: int = 0) -> str:
         self.log.append("user", user_message)
-        return self.get_assistant_message()
+        return self.get_assistant_message(thinking_time=thinking_time)
 
-    def retry(self) -> str:
+    def retry(self, thinking_time: int = 0) -> str:
         self.log.messages = self.log.messages[:-1]
-        return self.get_assistant_message()
+        return self.get_assistant_message(thinking_time=thinking_time)
 
-    def get_assistant_message(self) -> str:
+    def get_assistant_message(self, thinking_time: int) -> str:
         assistant_message = call_gpt(
             interface=self.interface,
             model=self.model,
@@ -70,6 +70,7 @@ class GptInterface:
             json_mode=self.json_mode,
             tools=self.tools,
             call_again_fn=self.get_assistant_message,
+            thinking_time=thinking_time,
         )
         self.rate_limiter.wait()
         self.log.append("assistant", assistant_message)
