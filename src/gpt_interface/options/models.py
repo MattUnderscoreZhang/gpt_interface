@@ -14,7 +14,26 @@ class Model:
 
 # from https://platform.openai.com/docs/models
 # TODO: notify about recommended and deprecated models, and do something with description
+# TODO: remove "recommended" parameter
 known_models = [
+    Model(
+        name="gpt-4-0125-preview",
+        description="GPT-4 Turbo: The latest GPT-4 model intended to reduce cases of “laziness” where the model doesn’t complete a task. Returns a maximum of 4,096 output tokens.",
+        max_tokens=128_000,
+        last_trained="Up to Dec 2023",
+        recommended=False,
+        deprecated=False,
+        legacy_chat_api=False,
+    ),
+    Model(
+        name="gpt-4-turbo-preview",
+        description="Currently points to gpt-4-0125-preview.",
+        max_tokens=128_000,
+        last_trained="Up to Dec 2023",
+        recommended=False,
+        deprecated=False,
+        legacy_chat_api=False,
+    ),
     Model(
         name="gpt-4-1106-preview",
         description="The latest GPT-4 model with improved instruction following, JSON mode, reproducible outputs, parallel function calling, and more. Returns a maximum of 4,096 output tokens. This preview model is not yet suited for production traffic. Learn more.",
@@ -156,7 +175,7 @@ known_models = [
         max_tokens=4_096,
         last_trained="Up to Jun 2021",
         recommended=False,
-        deprecated=False,
+        deprecated=True,
         legacy_chat_api=True,
     ),
     Model(
@@ -165,7 +184,7 @@ known_models = [
         max_tokens=4_096,
         last_trained="Up to Jun 2021",
         recommended=False,
-        deprecated=False,
+        deprecated=True,
         legacy_chat_api=True,
     ),
     Model(
@@ -174,7 +193,7 @@ known_models = [
         max_tokens=8_001,
         last_trained="Up to Jun 2021",
         recommended=False,
-        deprecated=False,
+        deprecated=True,
         legacy_chat_api=True,
     ),
     Model(
@@ -183,7 +202,7 @@ known_models = [
         max_tokens=16_384,
         last_trained="Up to Sep 2021",
         recommended=False,
-        deprecated=False,
+        deprecated=True,
         legacy_chat_api=True,
     ),
     Model(
@@ -192,7 +211,7 @@ known_models = [
         max_tokens=16_384,
         last_trained="Up to Sep 2021",
         recommended=False,
-        deprecated=False,
+        deprecated=True,
         legacy_chat_api=True,
     ),
     Model(
@@ -201,7 +220,7 @@ known_models = [
         max_tokens=2_049,
         last_trained="Up to Oct 2019",
         recommended=False,
-        deprecated=False,
+        deprecated=True,
         legacy_chat_api=True,
     ),
     Model(
@@ -210,7 +229,7 @@ known_models = [
         max_tokens=2_049,
         last_trained="Up to Oct 2019",
         recommended=False,
-        deprecated=False,
+        deprecated=True,
         legacy_chat_api=True,
     ),
     Model(
@@ -219,7 +238,7 @@ known_models = [
         max_tokens=2_049,
         last_trained="Up to Oct 2019",
         recommended=False,
-        deprecated=False,
+        deprecated=True,
         legacy_chat_api=True,
     ),
     Model(
@@ -228,7 +247,7 @@ known_models = [
         max_tokens=2_049,
         last_trained="Up to Oct 2019",
         recommended=False,
-        deprecated=False,
+        deprecated=True,
         legacy_chat_api=True,
     ),
     Model(
@@ -237,7 +256,7 @@ known_models = [
         max_tokens=2_049,
         last_trained="Up to Oct 2019",
         recommended=False,
-        deprecated=False,
+        deprecated=True,
         legacy_chat_api=True,
     ),
     Model(
@@ -246,7 +265,7 @@ known_models = [
         max_tokens=2_049,
         last_trained="Up to Oct 2019",
         recommended=False,
-        deprecated=False,
+        deprecated=True,
         legacy_chat_api=True,
     ),
     Model(
@@ -255,7 +274,7 @@ known_models = [
         max_tokens=2_049,
         last_trained="Up to Oct 2019",
         recommended=False,
-        deprecated=False,
+        deprecated=True,
         legacy_chat_api=True,
     ),
 ]
