@@ -354,6 +354,44 @@ if __name__ == "__main__":
     print(interface.log)
 ```
 
+## Passing Images
+
+You can add an image to your chat in two ways. You can either pass the filepath of an image on your local computer, or the URL of an image online.
+
+```python
+from dotenv import load_dotenv
+import os
+from typing import cast
+
+from gpt_interface import GptInterface
+
+
+def ask_about_image_from_filepath():
+    interface = GptInterface(
+        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        model="gpt-4-vision-preview",
+    )
+    interface.append_image_to_log_from_filepath("tests/elephant.webp")
+    response = interface.say("What animal is this?")
+    print(response)
+
+
+def ask_about_image_from_url():
+    interface = GptInterface(
+        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        model="gpt-4-vision-preview",
+    )
+    interface.append_image_to_log_from_url("https://en.wikipedia.org/static/images/icons/wikipedia.png")
+    response = interface.say("What logo is this?")
+    print(response)
+
+
+if __name__ == "__main__":
+    load_dotenv()  # load the OpenAI API key from a .env file
+    ask_about_image_from_filepath()
+    ask_about_image_from_url()
+```
+
 ## Thinking Time
 
 Though I haven't done a study on this, I've found that adding additional spaces to the end of a query seems to give better answers. Adding a thinking_time parameter just appends spaces to the end of your query.

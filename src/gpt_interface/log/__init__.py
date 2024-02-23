@@ -11,7 +11,7 @@ Role = Literal["user", "assistant", "system", "tool"]
 @dataclass
 class Message:
     role: Role
-    content: str
+    content: str | list[dict]  # either a message or an info dict (e.g. for images)
     tool_calls: list[dict] = field(default_factory=list)
     tool_call_id: str = ""  # for use by tool only
     name: str = ""  # for use by tool only

@@ -1,11 +1,16 @@
+import base64
 from openai import OpenAI
 
 from gpt_interface.calls.call_gpt import call_gpt
 from gpt_interface.calls.rate_limiter import RateLimiter
 from gpt_interface.log import Log
-from gpt_interface.options.models import known_models
+from gpt_interface.options.models import Model, known_models
 from gpt_interface.options.system_message import SystemMessageOptions
 from gpt_interface.tools import Tool
+
+def encode_image_in_base64(image_filepath: str):
+    with open(image_filepath, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
 
 
 class GptInterface:
@@ -33,6 +38,23 @@ class GptInterface:
         self.model = model
         if model not in [m.name for m in known_models]:
             print(f"Warning: unrecognized model {model}. Known models list may be out of date.")
+
+    def append_image_to_log_from_filepath(self, image_url: str) -> None:
+        self.append_image_to_log_from_url(
+            f"data:image/jpeg;base64,{encode_image_in_base64(image_url)}"
+        )
+
+    def append_image_to_log_from_url(self, image_url: str) -> None:
+        matching_model: Model = [m for m in known_models if m.name==self.model][0]
+        if not matching_model.vision_enabled:
+            print("Warning: Vision API is not enabled for this model. Image not attached.")
+        else:
+            self.log.append("user", [
+                {
+                    "type": "image_url",
+                    "image_url": {"url": image_url},
+                },
+            ])
 
     def set_json_mode(self, json_mode: bool) -> None:
         self.json_mode = json_mode
