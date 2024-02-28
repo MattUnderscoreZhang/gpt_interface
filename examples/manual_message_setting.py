@@ -8,7 +8,7 @@ from gpt_interface.log import Message
 
 def change_name():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4",
     )
     interface.say("Hi there!")
@@ -22,7 +22,7 @@ def change_name():
 
 def force_response():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4",
     )
     messages = [

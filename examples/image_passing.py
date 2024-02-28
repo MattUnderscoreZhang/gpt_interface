@@ -7,7 +7,7 @@ from gpt_interface import GptInterface
 
 def ask_about_image_from_filepath():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4-vision-preview",
     )
     interface.append_image_to_log_from_filepath("tests/elephant.webp")
@@ -17,7 +17,7 @@ def ask_about_image_from_filepath():
 
 def ask_about_image_from_url():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4-vision-preview",
     )
     interface.append_image_to_log_from_url("https://en.wikipedia.org/static/images/icons/wikipedia.png")

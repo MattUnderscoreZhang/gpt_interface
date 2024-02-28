@@ -12,7 +12,7 @@ def get_function_call_with_optional_params() -> None:
         return ["M", "T", "W", "Th", "F", "Sa", "Su"].index(day) + one_index
 
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
     )
     interface.set_tools(
@@ -42,7 +42,7 @@ def get_function_call_with_optional_params() -> None:
 
 def call_external_function() -> None:
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4",
     )
     interface.set_tools(

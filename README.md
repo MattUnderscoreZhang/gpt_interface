@@ -22,7 +22,7 @@ from gpt_interface import GptInterface
 if __name__ == "__main__":
     load_dotenv()  # load the OpenAI API key from a .env file
     interface = GptInterface(  # create interface
-        openai_api_key=os.getenv("OPENAI_API_KEY"),
+        api_key=os.getenv("OPENAI_API_KEY"),
         model="gpt-3.5-turbo",
     )
 ```
@@ -41,7 +41,7 @@ from gpt_interface import GptInterface
 if __name__ == "__main__":
     load_dotenv()
     interface = GptInterface(
-        openai_api_key=os.getenv("OPENAI_API_KEY"),
+        api_key=os.getenv("OPENAI_API_KEY"),
         model="gpt-3.5-turbo",
     )
     interface.say("Hi! My name is Matt")  # talk to GPT
@@ -95,7 +95,7 @@ from gpt_interface.log import Message
 
 def change_name():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4",
     )
     interface.say("Hi there!")
@@ -109,7 +109,7 @@ def change_name():
 
 def force_response():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4",
     )
     messages = [
@@ -148,7 +148,7 @@ from gpt_interface import GptInterface
 
 def be_pirate():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
     )
     interface.set_system_message(
@@ -162,7 +162,7 @@ def be_pirate():
 
 def be_space_trucker():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
     )
     interface.set_system_message(
@@ -175,7 +175,7 @@ def be_space_trucker():
 
 def be_normal():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
     )
     interface.set_system_message(
@@ -209,7 +209,7 @@ from gpt_interface import GptInterface
 
 def json_response():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4",
         json_mode=True,
     )
@@ -249,7 +249,7 @@ def get_function_call_with_optional_params() -> None:
         return ["M", "T", "W", "Th", "F", "Sa", "Su"].index(day) + one_index
 
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
     )
     interface.set_tools(
@@ -296,7 +296,7 @@ from gpt_interface.tools import make_annotated_function
 
 def call_external_function() -> None:
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4",
     )
     interface.set_tools(
@@ -344,7 +344,7 @@ from gpt_interface import GptInterface
 if __name__ == "__main__":
     load_dotenv()  # load the OpenAI API key from a .env file
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
     )
     response = interface.say("Give me a random number from 1-1000.")
@@ -368,7 +368,7 @@ from gpt_interface import GptInterface
 
 def ask_about_image_from_filepath():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4-vision-preview",
     )
     interface.append_image_to_log_from_filepath("tests/elephant.webp")
@@ -378,7 +378,7 @@ def ask_about_image_from_filepath():
 
 def ask_about_image_from_url():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4-vision-preview",
     )
     interface.append_image_to_log_from_url("https://en.wikipedia.org/static/images/icons/wikipedia.png")
@@ -406,7 +406,7 @@ from gpt_interface import GptInterface
 
 def dont_think(question: str):
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
         json_mode=True,
     )
@@ -416,7 +416,7 @@ def dont_think(question: str):
 
 def think(question: str):
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
         json_mode=True,
     )

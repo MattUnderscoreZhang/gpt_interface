@@ -16,15 +16,19 @@ def encode_image_in_base64(image_filepath: str):
 class GptInterface:
     def __init__(
         self,
-        openai_api_key: str,
+        api_key: str,
         model: str,
         json_mode: bool = False,
         temperature: float = 1.0,
+        openai_api_key: str | None = None,  # deprecated
     ) -> None:
         self.set_model(model)
         self.set_json_mode(json_mode)
         self.temperature = temperature
-        self.interface = OpenAI(api_key=openai_api_key)
+        if openai_api_key:
+            print("Warning: openai_api_key is deprecated. Use api_key instead.")
+            api_key = openai_api_key
+        self.interface = OpenAI(api_key=api_key)
         self.log = Log()
         self.rate_limiter = RateLimiter()
         self.system_message_options = SystemMessageOptions(

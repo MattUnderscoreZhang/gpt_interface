@@ -7,7 +7,7 @@ from gpt_interface import GptInterface
 
 def dont_think(question: str):
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
         json_mode=True,
     )
@@ -17,7 +17,7 @@ def dont_think(question: str):
 
 def think(question: str):
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
         json_mode=True,
     )

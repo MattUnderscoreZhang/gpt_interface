@@ -7,7 +7,7 @@ from gpt_interface import GptInterface
 
 def be_pirate():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
     )
     interface.set_system_message(
@@ -21,7 +21,7 @@ def be_pirate():
 
 def be_space_trucker():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
     )
     interface.set_system_message(
@@ -34,7 +34,7 @@ def be_space_trucker():
 
 def be_normal():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-3.5-turbo",
     )
     interface.set_system_message(

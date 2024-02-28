@@ -8,7 +8,7 @@ from gpt_interface import GptInterface
 
 def save_log():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4",
     )
     interface.say("Hi there!")
@@ -18,7 +18,7 @@ def save_log():
 
 def load_log():
     interface = GptInterface(
-        openai_api_key=cast(str, os.getenv("OPENAI_API_KEY")),
+        api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model="gpt-4",
     )
     my_path = Path(__file__).parent
