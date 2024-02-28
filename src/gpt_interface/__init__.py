@@ -20,6 +20,7 @@ class GptInterface:
         model: str,
         json_mode: bool = False,
         temperature: float = 1.0,
+        base_url: str | None = None,
         openai_api_key: str | None = None,  # deprecated
     ) -> None:
         self.set_model(model)
@@ -28,7 +29,11 @@ class GptInterface:
         if openai_api_key:
             print("Warning: openai_api_key is deprecated. Use api_key instead.")
             api_key = openai_api_key
-        self.interface = OpenAI(api_key=api_key)
+        self.interface = (
+            OpenAI(base_url=base_url, api_key=api_key)
+            if base_url
+            else OpenAI(api_key=api_key)
+        )
         self.log = Log()
         self.rate_limiter = RateLimiter()
         self.system_message_options = SystemMessageOptions(

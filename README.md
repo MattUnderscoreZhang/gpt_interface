@@ -80,6 +80,29 @@ The log from the example above would look something like this:
 ]
 ```
 
+## Different Server
+
+You can point the URL to any server that exposes an OpenAI-like API, including a local server.
+
+```python
+from dotenv import load_dotenv
+import os
+
+from gpt_interface import GptInterface
+
+
+if __name__ == "__main__":
+    load_dotenv()
+    interface = GptInterface(
+        base_url="http://localhost:8000",
+        api_key=os.getenv("OPENAI_API_KEY"),
+        model="gpt-3.5-turbo",
+    )
+    interface.say("Hi! My name is Matt")  # talk to GPT
+    response = interface.say("What's my name?")  # conversation log is stored in memory
+    assert "Matt" in response
+```
+
 ## Manual Editing of Chat Log
 
 You can manually overwrite the chat log in GptInterface, and continue the chat with it.
