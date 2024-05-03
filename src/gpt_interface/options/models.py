@@ -16,6 +16,20 @@ class Model:
 # TODO: do something with model description
 known_models = [
     Model(
+        name="gpt-4-turbo",
+        description="GPT-4 Turbo with Vision: The latest GPT-4 Turbo model with vision capabilities. Vision requests can now use JSON mode and function calling. Currently points to gpt-4-turbo-2024-04-09.",
+        max_tokens=128_000,
+        deprecated=False,
+        legacy_chat_api=False,
+    ),
+    Model(
+        name="gpt-4-turbo-2024-04-09",
+        description="GPT-4 Turbo with Vision model. Vision requests can now use JSON mode and function calling. gpt-4-turbo currently points to this version.",
+        max_tokens=128_000,
+        deprecated=False,
+        legacy_chat_api=False,
+    ),
+    Model(
         name="gpt-4-0125-preview",
         description="GPT-4 Turbo: The latest GPT-4 model intended to reduce cases of “laziness” where the model doesn’t complete a task. Returns a maximum of 4,096 output tokens.",
         max_tokens=128_000,
