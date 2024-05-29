@@ -12,7 +12,6 @@ if __name__ == "__main__":
     interface = GptInterface(
         api_key=cast(str, os.getenv("OPENAI_API_KEY")),
         model=model,
-        json_mode=True,
     )
     cprint(f"You are talking to {model}.\n", "blue")
     while True:
